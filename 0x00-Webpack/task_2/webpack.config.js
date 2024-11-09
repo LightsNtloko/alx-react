@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './css/index.js,
+  entry: './js/dashboard_main.js',
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js'
@@ -13,18 +13,18 @@ module.exports = {
 	use: ['style-loader', 'css-loader']
       },
       {
-	test: /\.(png|jpg|jpeg|gif_$/i,
+	test: /\.(png|jpg|jpeg|gif)$/i,
 	type: 'asset/resource',
 	use: [
 	  {
 	    loader: 'file-loader',
-	    option: {
+	    options: {
 	      name: '[path][name].[ext]',
 	    },
 	  },
 	  {
 	    loader: 'image-webpack-loader',
-	    option: {
+	    options: {
 	      mozjpeg: {
 		progressive: true,
 		quality: 65,
