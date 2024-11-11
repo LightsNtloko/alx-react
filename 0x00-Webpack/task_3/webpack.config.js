@@ -8,12 +8,15 @@ module.exports = {
     header: './modules/header/header.js',
     body: './modules/body/body.js',
     footer: './modules/footer/footer.js',
+  },
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[name].bundle.js',
   },
-  devSever: {
-    contentBase: path.join(__dirname, 'public'),
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
     port: 8564,
     open: true,
   },
