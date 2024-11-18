@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import logo from './holberton-logo.png';
+import logo from './holberton-logo.jpg';
 
 function App() {
   return (
@@ -8,13 +8,13 @@ function App() {
       <header className="App-header">
         <img src={logo} alt="Holberton logo" />
 	<h1>School dashboard</h1>
-      </div>
-      <div className="App-body">
+      </header>
+      <body className="App-body">
         <p>Login to access the full dashboard</p>
-      </div>
-      <div className="App-footer">
+      </body>
+      <footer className="App-footer">
         <p>Copyright 2020 - Holberton School</p>
-      </div>
+      </footer>
     </div>
   );
 }
