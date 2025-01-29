@@ -11,12 +11,11 @@ import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBot
 import BodySection from "../BodySection/BodySection";
 import { AppContext, user as defaultUser } from "./AppContext";
 import { getLatestNotification } from "../utils/utils";
-import { displayNotificationDrawer, hideNotificationDrawer } from "../actions/uiActions"; // Import action creators
+import { loginRequest } from "../actions/uiActions"; // Import the loginRequest action creator
 
 class App extends Component {
   state = {
     user: defaultUser,
-    logOut: this.logOut,
     listNotifications: [
       { id: 1, type: "default", value: "New course available" },
       { id: 2, type: "urgent", value: "New resume available" },
@@ -46,18 +45,6 @@ class App extends Component {
     }
   };
 
-  logIn = (email, password) => {
-    this.setState({
-      user: { email, password, isLoggedIn: true },
-    });
-  };
-
-  logOut = () => {
-    this.setState({
-      user: defaultUser,
-    });
-  };
-
   markNotificationAsRead = (id) => {
     this.setState((prevState) => ({
       listNotifications: prevState.listNotifications.filter(
@@ -67,18 +54,16 @@ class App extends Component {
   };
 
   render() {
-    const { user } = this.state;
-    const { isLoggedIn, displayDrawer, displayNotificationDrawer, hideNotificationDrawer } = this.props;
+    const { user, listNotifications } = this.state;
+    const { isLoggedIn, displayDrawer, loginRequest } = this.props; // Now using loginRequest from props
 
     return (
-      <AppContext.Provider value={{ user, logout: this.logOut }}>
+      <AppContext.Provider value={{ user, logout: this.props.logOut }}>
         <div className={css(styles.App)}>
           <Notifications
-            listNotifications={this.state.listNotifications}
+            listNotifications={listNotifications}
             displayDrawer={displayDrawer}
             markNotificationAsRead={this.markNotificationAsRead}
-            handleDisplayDrawer={displayNotificationDrawer} // Passing props to components
-            handleHideDrawer={hideNotificationDrawer} // Passing props to components
           />
           <Header />
           <main className={css(styles.mainContent)}>
@@ -88,7 +73,7 @@ class App extends Component {
               </BodySectionWithMarginBottom>
             ) : (
               <BodySectionWithMarginBottom title="Log in to continue">
-                <Login logIn={this.logIn} />
+                <Login logIn={loginRequest} /> {/* Now passing loginRequest to Login */}
               </BodySectionWithMarginBottom>
             )}
             <BodySection title="News from the school">
@@ -125,30 +110,28 @@ const styles = StyleSheet.create({
   },
 });
 
-App.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  displayDrawer: PropTypes.bool,
-  displayNotificationDrawer: PropTypes.func,
-  hideNotificationDrawer: PropTypes.func,
-};
-
 App.defaultProps = {
   isLoggedIn: false,
   displayDrawer: false,
-  displayNotificationDrawer: () => {},
-  hideNotificationDrawer: () => {},
+  logOut: () => {},
+  loginRequest: () => {}, // Default function for loginRequest
 };
 
-// Updated mapStateToProps
+App.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  displayDrawer: PropTypes.bool,
+  loginRequest: PropTypes.func.isRequired, // loginRequest as a required prop
+};
+
+// mapStateToProps to get isLoggedIn and displayDrawer from the Redux state
 const mapStateToProps = (state) => ({
   isLoggedIn: state.get("isUserLoggedIn"),
   displayDrawer: state.get("isNotificationDrawerVisible"),
 });
 
-// Simplified mapDispatchToProps
+// mapDispatchToProps to connect loginRequest action creator to the component
 const mapDispatchToProps = {
-  displayNotificationDrawer,
-  hideNotificationDrawer,
+  loginRequest,
 };
 
 export { mapStateToProps };
