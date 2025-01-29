@@ -1,19 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { createStore, applyMiddleware } from "redux"; // Import applyMiddleware
-import { Provider } from "react-redux";
-import App from "./App/App";
-import uiReducer from "./reducers/uiReducer";
-import thunk from "redux-thunk"; // Import redux-thunk
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import './index.css';
+import App from './App';
+import rootReducer from './reducers/rootReducer'; // Import the rootReducer
 
-// Create Redux store with uiReducer and apply redux-thunk middleware
-const store = createStore(uiReducer, applyMiddleware(thunk));
+// Create the Redux store using the rootReducer
+const store = createStore(rootReducer);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  <Provider store={store}> {/* Provide the store to the entire app */}
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
