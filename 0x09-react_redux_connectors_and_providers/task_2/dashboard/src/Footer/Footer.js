@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./Footer.css";
 import { getFullYear, getFooterCopy } from "../utils/utils";
-import { AppContext } from "../App/AppContext";
+import { connect } from "react-redux";
 
-function Footer() {
-  const { user } = useContext(AppContext);
-
+function Footer({ user }) {
   return (
     <div className="App-footer">
       {user.isLoggedIn && (
@@ -20,4 +18,10 @@ function Footer() {
   );
 }
 
-export default Footer;
+// mapStateToProps function to get the user from the Redux state
+const mapStateToProps = (state) => ({
+  user: state.get("user"), // Assuming "user" is stored in the state
+});
+
+// Connect the component to Redux
+export default connect(mapStateToProps)(Footer);
