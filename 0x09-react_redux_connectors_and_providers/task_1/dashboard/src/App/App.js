@@ -11,7 +11,7 @@ import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBot
 import BodySection from "../BodySection/BodySection";
 import { AppContext, user as defaultUser } from "./AppContext";
 import { getLatestNotification } from "../utils/utils";
-import { displayNotificationDrawer, hideNotificationDrawer } from "../actions/uiActions"; // Import the action creators
+import { displayNotificationDrawer, hideNotificationDrawer } from "../actions/uiActions"; // Import action creators
 
 class App extends Component {
   state = {
@@ -67,18 +67,18 @@ class App extends Component {
   };
 
   render() {
-    const { user, listNotifications } = this.state;
+    const { user } = this.state;
     const { isLoggedIn, displayDrawer, displayNotificationDrawer, hideNotificationDrawer } = this.props;
 
     return (
       <AppContext.Provider value={{ user, logout: this.logOut }}>
         <div className={css(styles.App)}>
           <Notifications
-            listNotifications={listNotifications}
+            listNotifications={this.state.listNotifications}
             displayDrawer={displayDrawer}
-            handleDisplayDrawer={displayNotificationDrawer} // Use the function from props
-            handleHideDrawer={hideNotificationDrawer} // Use the function from props
             markNotificationAsRead={this.markNotificationAsRead}
+            handleDisplayDrawer={displayNotificationDrawer} // Passing props to components
+            handleHideDrawer={hideNotificationDrawer} // Passing props to components
           />
           <Header />
           <main className={css(styles.mainContent)}>
@@ -125,20 +125,18 @@ const styles = StyleSheet.create({
   },
 });
 
-App.defaultProps = {
-  isLoggedIn: false,
-  displayDrawer: false,
-  logOut: () => {},
-  displayNotificationDrawer: () => {},
-  hideNotificationDrawer: () => {},
-};
-
 App.propTypes = {
   isLoggedIn: PropTypes.bool,
   displayDrawer: PropTypes.bool,
-  logOut: PropTypes.func,
   displayNotificationDrawer: PropTypes.func,
   hideNotificationDrawer: PropTypes.func,
+};
+
+App.defaultProps = {
+  isLoggedIn: false,
+  displayDrawer: false,
+  displayNotificationDrawer: () => {},
+  hideNotificationDrawer: () => {},
 };
 
 // Updated mapStateToProps
