@@ -1,17 +1,22 @@
-import { FETCH_NOTIFICATIONS_SUCCESS, MARK_AS_READ, SET_TYPE_FILTER } from '../actions/notificationActionTypes';
+import { FETCH_NOTIFICATIONS_SUCCESS, MARK_AS_READ, SET_TYPE_FILTER, SET_LOADING_STATE } from '../actions/notificationActionTypes';
 import { fromJS } from 'immutable';
 import { notificationsNormalizer } from '../schema/notifications';
 
+// Initial state with a loading attribute
 const initialState = fromJS({
   filter: 'DEFAULT',
-  notifications: {}
+  notifications: {},
+  loading: false, // Add loading attribute
 });
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_LOADING_STATE:
+      return state.set('loading', action.isLoading); // Handle loading state change
+
     case FETCH_NOTIFICATIONS_SUCCESS:
-      return state.merge({
-        notifications: fromJS(notificationsNormalizer(action.data).entities.notifications || {})
+      return state.mergeDeep({ // Use mergeDeep to ensure nested state is merged
+        notifications: fromJS(notificationsNormalizer(action.notifications).entities.notifications || {}),
       });
 
     case MARK_AS_READ:
