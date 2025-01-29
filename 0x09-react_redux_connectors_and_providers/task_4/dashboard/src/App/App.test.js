@@ -4,14 +4,16 @@ import App, { mapStateToProps } from "./App";
 import { fromJS } from "immutable";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import uiReducer, { initialState } from "../reducers/uiReducer";
+import rootReducer from "../reducers/rootReducer"; // Import rootReducer instead of uiReducer
 
-const store = createStore(uiReducer, initialState);
+const store = createStore(rootReducer); // Use the rootReducer to create the store
 
 describe("<App />", () => {
   it("mapStateToProps returns the correct object from user login state", () => {
     let state = fromJS({
-      isUserLoggedIn: true,
+      ui: {
+        isUserLoggedIn: true,
+      },
     });
 
     const expected = { isLoggedIn: true };
@@ -20,7 +22,9 @@ describe("<App />", () => {
 
   it("mapStateToProps returns the correct object from notification drawer state", () => {
     let state = fromJS({
-      isNotificationDrawerVisible: true,
+      ui: {
+        isNotificationDrawerVisible: true,
+      },
     });
 
     const expected = { displayDrawer: true };
