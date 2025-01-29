@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
 import Footer from "./Footer";
 import { getFullYear, getFooterCopy } from "../utils/utils";
@@ -14,8 +14,7 @@ describe("Footer component tests", () => {
   });
 
   it('should render the correct copyright text', () => {
-    const wrapper = mount(<Footer />);
-
+    const wrapper = shallow(<Footer />);
     expect(wrapper.find("p").text()).toBe(`Copyright ${getFullYear()} - ${getFooterCopy()}`);
   });
 
@@ -28,7 +27,7 @@ describe("Footer component tests", () => {
       },
     };
 
-    const wrapper = mount(
+    const wrapper = shallow(
       <AppContext.Provider value={context}>
         <Footer />
       </AppContext.Provider>
@@ -36,8 +35,6 @@ describe("Footer component tests", () => {
 
     expect(wrapper.find("a").length).toBe(0);
     expect(wrapper.text()).not.toContain("Contact us");
-
-    wrapper.unmount();
   });
 
   it("should render 'Contact us' link when user is logged in", () => {
@@ -49,7 +46,7 @@ describe("Footer component tests", () => {
       },
     };
 
-    const wrapper = mount(
+    const wrapper = shallow(
       <AppContext.Provider value={context}>
         <Footer />
       </AppContext.Provider>
@@ -57,7 +54,5 @@ describe("Footer component tests", () => {
 
     expect(wrapper.find("a").length).toBe(1);
     expect(wrapper.text()).toContain("Contact us");
-
-    wrapper.unmount();
   });
 });
