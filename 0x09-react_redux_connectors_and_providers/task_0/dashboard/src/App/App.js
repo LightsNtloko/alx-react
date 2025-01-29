@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, css } from "aphrodite";
 import { connect } from "react-redux";
+import { StyleSheet, css } from "aphrodite";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Login from "../Login/Login";
@@ -71,7 +71,7 @@ class App extends Component {
 
   render() {
     const { displayDrawer, user, listNotifications } = this.state;
-    const { isLoggedIn } = this.props; // Get isLoggedIn from Redux
+    const { isLoggedIn } = this.props;
 
     return (
       <AppContext.Provider value={{ user, logout: this.logOut }}>
@@ -110,11 +110,6 @@ class App extends Component {
   }
 }
 
-// Redux: map state to props
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.ui.isLoggedIn, // Getting isLoggedIn from uiReducer
-});
-
 const styles = StyleSheet.create({
   App: {
     display: "flex",
@@ -133,8 +128,19 @@ const styles = StyleSheet.create({
   },
 });
 
-App.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
+App.defaultProps = {
+  isLoggedIn: false,
+  logOut: () => {},
 };
 
+App.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  logOut: PropTypes.func,
+};
+
+const mapStateToProps = (state) => ({
+  isLoggedIn: state.get("isUserLoggedIn"),
+});
+
+export { mapStateToProps };
 export default connect(mapStateToProps)(App);
