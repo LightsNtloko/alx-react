@@ -12,7 +12,7 @@ describe("uiReducer with Immutable.js", () => {
   const initialState = Map({
     isNotificationDrawerVisible: false,
     isUserLoggedIn: false,
-    user: {},
+    user: null, // Initially null as no user is logged in
   });
 
   it("should return the initial state when no action is passed", () => {
@@ -38,8 +38,10 @@ describe("uiReducer with Immutable.js", () => {
   });
 
   it("should handle LOGIN_SUCCESS action", () => {
-    const action = { type: LOGIN_SUCCESS };
-    const expectedState = initialState.set("isUserLoggedIn", true);
+    const action = { type: LOGIN_SUCCESS, user: { email: "test@test.com" } };
+    const expectedState = initialState
+      .set("isUserLoggedIn", true)
+      .set("user", { email: "test@test.com" });
     expect(uiReducer(initialState, action).toJS()).toEqual(expectedState.toJS());
   });
 
@@ -52,8 +54,8 @@ describe("uiReducer with Immutable.js", () => {
 
   it("should handle LOGOUT action", () => {
     const action = { type: LOGOUT };
-    const prevState = initialState.set("isUserLoggedIn", true);
-    const expectedState = initialState.set("isUserLoggedIn", false);
+    const prevState = initialState.set("isUserLoggedIn", true).set("user", { email: "test@test.com" });
+    const expectedState = initialState.set("isUserLoggedIn", false).set("user", null);
     expect(uiReducer(prevState, action).toJS()).toEqual(expectedState.toJS());
   });
 });
