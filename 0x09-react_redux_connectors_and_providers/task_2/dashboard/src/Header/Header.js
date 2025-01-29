@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import logo from "../assets/holberton-logo.jpg";
 import { StyleSheet, css } from "aphrodite";
-import { AppContext } from "../App/AppContext";
+import { connect } from "react-redux";
+import { logout } from "../actions/uiActions"; // Assuming this is the logout action creator
 
-function Header() {
-  const { user, logOut } = useContext(AppContext);
-
+function Header({ user, logOut }) {
   return (
     <>
       <div className={css(styles["App-header"])}>
@@ -27,6 +26,19 @@ function Header() {
   );
 }
 
+// mapStateToProps function to get the user from the Redux state
+const mapStateToProps = (state) => ({
+  user: state.get("user"), // Assuming "user" is stored in the state as an Immutable Map
+});
+
+// mapDispatchToProps function to map the logOut action creator to the props
+const mapDispatchToProps = (dispatch) => ({
+  logOut: () => dispatch(logout()), // Dispatch the logout action
+});
+
+// Connect the component to Redux
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
+
 const styles = StyleSheet.create({
   "App-header": {
     fontSize: "1.4rem",
@@ -45,5 +57,3 @@ const styles = StyleSheet.create({
     marginTop: "1rem",
   },
 });
-
-export default Header;
